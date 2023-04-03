@@ -25,21 +25,15 @@ def headLines(File logFile, String headLine, String headersPDS) {
 	
 	println "***** Ray Lam HEADLINES $headLine"
 
-// All the following methods have been repplaced by the "headlines" method .
 
-def copyDashes(File logFile) {
-	
-	println "***** Ray Lam DASHED $logFile"
-	
-	CopyToHFS copyCmd = new CopyToHFS();
-	copyCmd.setDataset("RLAM.IDZAPP.HEADERS");
-	copyCmd.setMember("DASHES");
-	copyCmd.setFile(new File("$logFile"));
-	copyCmd.append(true);
-	copyCmd.copy();
-	
+    new CopyToHFS().file(new File("$logFile"))
+    .hfsEncoding("UTF-8")
+    .dataset("$headersPDS")
+    .member("$headLine")
+    .append(true)
+    .execute()
 		
-	return logFile
+     return
 
 }
 
