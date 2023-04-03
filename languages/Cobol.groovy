@@ -147,7 +147,7 @@ sortedList.each { buildFile ->
 	printPDS = sysprintUtils.headLines(logFile, headLine, headersPDS)
 		
 	// Straight call to sysPrint for Sysprint for -compile -linkedit and end of job
-	printPDS = sysprintUtils.sysprint(props.cobol_prnPDS, member, logFile)
+	printPDS = sysprintUtils.sysPrint(props.cobol_prnPDS, member, logFile)
 	println "***** Ray Lam copied logfile to PDS -> $printPDS \n "
 
 	// clean up passed DD statements
