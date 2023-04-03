@@ -494,6 +494,10 @@ def createLanguageDatasets(String lang) {
 
 	if (props."${lang}_cexecDatasets")
 		createDatasets(props."${lang}_cexecDatasets".split(','), props."${lang}_cexecOptions")
+	
+	//Ray Lam
+	if (props."${lang}_prnDatasets")
+		createDatasets(props."${lang}_prnDatasets".split(','), props."${lang}_prnOptions")
 }
 
 /*
