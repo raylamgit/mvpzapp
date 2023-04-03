@@ -13,8 +13,10 @@ import com.ibm.dbb.build.report.records.*
 @Field def buildUtils= loadScript(new File("${props.zAppBuildDir}/utilities/BuildUtilities.groovy"))
 @Field def impactUtils= loadScript(new File("${props.zAppBuildDir}/utilities/ImpactUtilities.groovy"))
 @Field def bindUtils= loadScript(new File("${props.zAppBuildDir}/utilities/BindUtilities.groovy"))
+@Field def sysprintUtils= loadScript(new File("${props.zAppBuildDir}/utilities/SysprintUtilities.groovy"))
 	
 println("** Building files mapped to ${this.class.getName()}.groovy script")
+println("***** Ray Lam testing Sysprint Util at Cobol.groovy")
 
 // verify required build properties
 buildUtils.assertBuildProperties(props.cobol_requiredBuildProperties)
@@ -63,10 +65,18 @@ sortedList.each { buildFile ->
 	// execute mvs commands in a mvs job
 	MVSJob job = new MVSJob()
 	job.start()
+	
+	//Ray Lam get headersPDS from application-conf -> Cobol.properties
+	String headersPDS = props.getFileProperty('cobol_dbb_headersPDS', buildFile)
+	println "***** Ray Lam get headersPDS file name -> $headersPDS"
 
 	// compile the cobol program
 	int rc = compile.execute()
 	int maxRC = props.getFileProperty('cobol_compileMaxRC', buildFile).toInteger()
+	
+	// Ray Lam After Compile, Just for the Compile listing props.cobol_listPDS
+	printPDS = sysprintUtils.sysPrint(props.cobol_listPDS, member, logFile)
+	println "***** Ray Lam copied Compile listing for IBM Debugger  -> $printPDS \n "
 
 	boolean bindFlag = true
 
@@ -88,6 +98,9 @@ sortedList.each { buildFile ->
 		
 		String needsLinking = props.getFileProperty('cobol_linkEdit', buildFile)
 		if (needsLinking.toBoolean()) {
+			//Ray Lam Linkedit Header
+			headLine = "LINKEDIT"
+			printPDS = sysprintUtils.headLines(logFile, headLine, headersPDS)
 			rc = linkEdit.execute()
 			maxRC = props.getFileProperty('cobol_linkEditMaxRC', buildFile).toInteger()
 
@@ -125,6 +138,17 @@ sortedList.each { buildFile ->
 			buildUtils.updateBuildResult(errorMsg:errorMsg,logs:["${member}_bind.log":bindLogFile])
 		}
 	}
+	
+    //Ray Lam  add end of job comments
+	def String printPDS	
+	headLine = "COMMENTS"
+	
+	//printPDS = sysprintUtils.copySysprint(buildFile, props.cobol_prnPDS, member, logFile, headLine)
+	printPDS = sysprintUtils.headLines(logFile, headLine, headersPDS)
+		
+	// Straight call to sysPrint for Sysprint for -compile -linkedit and end of job
+	printPDS = sysprintUtils.sysprint(props.cobol_prnPDS, member, logFile)
+	println "***** Ray Lam copied logfile to PDS -> $printPDS \n "
 
 	// clean up passed DD statements
 	job.stop()
@@ -335,7 +359,18 @@ def createLinkEditCommand(String buildFile, LogicalFile logicalFile, String memb
 		linkedit.dd(new DDStatement().name("SYSLMOD").dsn("${props.cobol_testcase_loadPDS}($member)").options('shr').output(true).deployType('ZUNIT-TESTCASE'))
 	}
 	else {
-		linkedit.dd(new DDStatement().name("SYSLMOD").dsn("${props.cobol_loadPDS}($member)").options('shr').output(true).deployType(deployType))
+	 
+		// Ray Lam if cics then the load will be CICSLOAD
+				if (buildUtils.isCICS(logicalFile)) {
+				linkedit.dd(new DDStatement().name("SYSLMOD").dsn("${props.cobol_loadcicsPDS}($member)").options('shr').output(true).deployType(deployType))
+				}
+				else
+				{
+					linkedit.dd(new DDStatement().name("SYSLMOD").dsn("${props.cobol_loadPDS}($member)").options('shr').output(true).deployType(deployType))
+				}
+                		
+		//linkedit.dd(new DDStatement().name("SYSLMOD").dsn("${props.cobol_loadPDS}($member)").options('shr').output(true).deployType(deployType))
+
 	}
 	linkedit.dd(new DDStatement().name("SYSPRINT").options(props.cobol_printTempOptions))
 	linkedit.dd(new DDStatement().name("SYSUT1").options(props.cobol_tempOptions))
