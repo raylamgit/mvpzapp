@@ -15,7 +15,7 @@ def sysPrint(String prnPDS, String member, File logFile) {
     	.execute()
 
 
-   println("***** Ray Lam sysPrint copyToPADS finished")
+   println("***** Ray Lam sysPrint copyToPDS finished")
    String printPDS = prnPDS + "($member)"
    return printPDS
 		
