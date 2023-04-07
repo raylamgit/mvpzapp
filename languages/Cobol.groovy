@@ -84,13 +84,15 @@ sortedList.each { buildFile ->
 	int rc = compile.execute()
 	int maxRC = props.getFileProperty('cobol_compileMaxRC', buildFile).toInteger()
 	
+			//Ray Lam Linkedit Header
+			headLine = "COMPILE"
+			printPDS = sysprintUtils.headLines(logFile, headLine, headersPDS)
+	
 	// Ray Lam After Compile, Just for the Compile listing props.cobol_listPDS
 	printPDS = sysprintUtils.sysPrint(props.cobol_listPDS, member, logFile)
 	println "***** Ray Lam copied Compile listing for IBM Debugger  -> $printPDS \n "
 	
-	//Ray Lam Linkedit Header
-	headLine = "COMPILE"
-	printPDS = sysprintUtils.headLines(logFile, headLine, headersPDS)
+	
 
 	boolean bindFlag = true
 
