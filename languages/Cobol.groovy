@@ -87,6 +87,10 @@ sortedList.each { buildFile ->
 	// Ray Lam After Compile, Just for the Compile listing props.cobol_listPDS
 	printPDS = sysprintUtils.sysPrint(props.cobol_listPDS, member, logFile)
 	println "***** Ray Lam copied Compile listing for IBM Debugger  -> $printPDS \n "
+	
+	//Ray Lam Linkedit Header
+	headLine = "COMPILE"
+	printPDS = sysprintUtils.headLines(logFile, headLine, headersPDS)
 
 	boolean bindFlag = true
 
@@ -306,7 +310,8 @@ def createCompileCommand(String buildFile, LogicalFile logicalFile, String membe
 	}
 
 	// add a copy command to the compile command to copy the SYSPRINT from the temporary dataset to an HFS log file
-	compile.copy(new CopyToHFS().ddName("SYSPRINT").file(logFile).hfsEncoding(props.logEncoding))
+	compile.copy(new CopyToHFS().ddName("SYSPRINT").file(logFile).hfsEncoding(props.logEncoding).append(true))
+
 
 	return compile
 }
