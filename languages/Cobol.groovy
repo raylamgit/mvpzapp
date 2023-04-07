@@ -14,7 +14,9 @@ import com.ibm.dbb.build.report.records.*
 @Field def impactUtils= loadScript(new File("${props.zAppBuildDir}/utilities/ImpactUtilities.groovy"))
 @Field def bindUtils= loadScript(new File("${props.zAppBuildDir}/utilities/BindUtilities.groovy"))
 @Field def sysprintUtils= loadScript(new File("${props.zAppBuildDir}/utilities/SysprintUtilities.groovy"))
-	
+@Field def compileUtils= loadScript(new File("${props.zAppBuildDir}/utilities/CompileUtilities.groovy"))
+
+
 println("** Building files mapped to ${this.class.getName()}.groovy script")
 println("***** Ray Lam testing Sysprint Util at Cobol.groovy")
 
