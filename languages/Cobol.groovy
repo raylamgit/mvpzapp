@@ -59,6 +59,30 @@ sortedList.each { buildFile ->
 	File logFile = new File( props.userBuild ? "${props.buildOutDir}/${member}.log" : "${props.buildOutDir}/${member}.cobol.log")
 	if (logFile.exists())
 		logFile.delete()
+
+	// Ray Lam Get OPtions first
+	//String ProcessorParm = props.getFileProperty('processorSearchPath', buildFile)
+	//println "***** Ray Lam Processor parms for $buildFile = $ProcessorParm"
+
+     
+
+	 println "***** Ray Lam call compileUtils"
+	 
+	 // Ray Lam Get ProcessorPath first
+		String ProcessorPath = props.getFileProperty('processorPath', buildFile)
+		println "***** Ray Lam Processor parms for $buildFile = $ProcessorPath"
+
+
+    String processorMember = "${ProcessorPath}/${member}.pro"
+    //compileProcess(buildFile, props.linkedit_loadPDS, logicalFile)
+	String Option1 = "COBOL"
+	String Option2 = "OPTIONS"
+	cobolOptions = compileUtils.compileParms(processorMember,member,Option1,Option2)
+	println "***** Ray Lam after returned from compileUtils Json file -> $cobolOptions \n "
+
+
+
+
 	MVSExec compile = createCompileCommand(buildFile, logicalFile, member, logFile)
 	MVSExec linkEdit = createLinkEditCommand(buildFile, logicalFile, member, logFile)
 
