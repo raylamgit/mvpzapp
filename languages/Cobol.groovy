@@ -68,22 +68,6 @@ sortedList.each { buildFile ->
 
      
 
-	 println "***** Ray Lam call compileUtils"
-	 
-	 // Ray Lam Get ProcessorPath first
-		String ProcessorPath = props.getFileProperty('processorPath', buildFile)
-		println "***** Ray Lam Processor parms for $buildFile = $ProcessorPath"
-
-
-    String processorMember = "${ProcessorPath}/${member}.pro"
-    //compileProcess(buildFile, props.linkedit_loadPDS, logicalFile)
-	String Option1 = "COBOL"
-	String Option2 = "OPTIONS"
-	cobolOptions = compileUtils.compileParms(processorMember,member,Option1,Option2)
-	println "***** Ray Lam after returned from compileUtils Json file -> $cobolOptions \n "
-
-
-
 
 	MVSExec compile = createCompileCommand(buildFile, logicalFile, member, logFile)
 	MVSExec linkEdit = createLinkEditCommand(buildFile, logicalFile, member, logFile)
@@ -345,6 +329,28 @@ def createLinkEditCommand(String buildFile, LogicalFile logicalFile, String memb
 	}
 	
 	if (props.verbose) println "Link-Edit parms for $buildFile = $parms"
+	
+
+	 println "***** Ray Lam call compileUtils"
+	 
+	 // Ray Lam Get ProcessorPath first
+		String ProcessorPath = props.getFileProperty('processorPath', buildFile)
+		println "***** Ray Lam Processor parms for $buildFile = $ProcessorPath"
+
+
+		String processorMember = "${ProcessorPath}/${member}.pro"
+    
+		println("***** Ray Lam Testing LINKEDIT ")
+		String Option1 = "LINKPARM"
+		String Option2 = "AMODE"
+		cobolOptions = compileUtils.compileParms(processorMember,member,Option1,Option2)
+	
+		println("***** Ray Lam Checking CompileUtil return  at LINKEDIT-> ${cobolOptions}")
+	
+		// Ray Lam add RMODE to the parms
+		parms = parms + ",$cobolOptions"
+	
+		println("***** Ray Lam modifying LINKEDIT PARMS -> ${parms}")
 	
 	// define the MVSExec command to link edit the program
 	MVSExec linkedit = new MVSExec().file(buildFile).pgm(linker).parm(parms)
