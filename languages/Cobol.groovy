@@ -174,9 +174,10 @@ sortedList.each { buildFile ->
 //* Method definitions
 //********************************************************************
 
+// Ray Lam createCobolParms moved to createCompileUtil
 /*
  * createCobolParms - Builds up the COBOL compiler parameter list from build and file properties
- */
+ 
 def createCobolParms(String buildFile, LogicalFile logicalFile) {
 	def parms = props.getFileProperty('cobol_compileParms', buildFile) ?: ""
 	def cics = props.getFileProperty('cobol_compileCICSParms', buildFile) ?: ""
@@ -204,6 +205,8 @@ def createCobolParms(String buildFile, LogicalFile logicalFile) {
 	if (props.verbose) println "Cobol compiler parms for $buildFile = $parms"
 	return parms
 }
+
+*/
 
 // Ray Lam createCompileCommand moved to createCompileUtil 
 /*
