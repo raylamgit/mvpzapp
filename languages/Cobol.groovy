@@ -15,6 +15,7 @@ import com.ibm.dbb.build.report.records.*
 @Field def bindUtils= loadScript(new File("${props.zAppBuildDir}/utilities/BindUtilities.groovy"))
 @Field def sysprintUtils= loadScript(new File("${props.zAppBuildDir}/utilities/SysprintUtilities.groovy"))
 @Field def compileUtils= loadScript(new File("${props.zAppBuildDir}/utilities/CompileUtilities.groovy"))
+@Field def createCompileUtils= loadScript(new File("${props.zAppBuildDir}/utilities/CreateCompileUtilities.groovy"))
 
 
 println("** Building files mapped to ${this.class.getName()}.groovy script")
@@ -68,8 +69,10 @@ sortedList.each { buildFile ->
 
      
 
+	// Ray Lam move createCompileCommand to createCompileUtils 
+	println "***** Ray Lam Testing createCompileUtils.createCompileCommand"
 
-	MVSExec compile = createCompileCommand(buildFile, logicalFile, member, logFile)
+	MVSExec compile = createCompileUtils.createCompileCommand(buildFile, logicalFile, member, logFile)
 	MVSExec linkEdit = createLinkEditCommand(buildFile, logicalFile, member, logFile)
 
 	// execute mvs commands in a mvs job
