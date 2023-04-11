@@ -205,9 +205,10 @@ def createCobolParms(String buildFile, LogicalFile logicalFile) {
 	return parms
 }
 
+// Ray Lam createCompileCommand moved to createCompileUtil 
 /*
  * createCompileCommand - creates a MVSExec command for compiling the COBOL program (buildFile)
- */
+ 
 def createCompileCommand(String buildFile, LogicalFile logicalFile, String member, File logFile) {
 	String parms = createCobolParms(buildFile, logicalFile)
 	String compiler = props.getFileProperty('cobol_compiler', buildFile)
@@ -314,6 +315,7 @@ def createCompileCommand(String buildFile, LogicalFile logicalFile, String membe
 	return compile
 }
 
+*/
 
 /*
  * createLinkEditCommand - creates a MVSExec xommand for link editing the COBOL object module produced by the compile
