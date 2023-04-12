@@ -11,7 +11,7 @@ import com.ibm.jzos.ZFile
 @Field def buildUtils= loadScript(new File("${props.zAppBuildDir}/utilities/BuildUtilities.groovy"))
 @Field def impactUtils= loadScript(new File("${props.zAppBuildDir}/utilities/ImpactUtilities.groovy"))
 @Field def bindUtils= loadScript(new File("${props.zAppBuildDir}/utilities/BindUtilities.groovy"))
-@Field def concatUtils= loadScript(new File("${props.zAppBuildDir}/utilities/ConcatUtilities.groovy"))	
+//@Field def concatUtils= loadScript(new File("${props.zAppBuildDir}/utilities/ConcatUtilities.groovy"))	
 	
 
 
@@ -68,7 +68,7 @@ def createCompileCommand(String buildFile, LogicalFile logicalFile, String membe
 	// add custom concatenation
 	def compileSyslibConcatenation = props.getFileProperty('cobol_compileSyslibConcatenation', buildFile) ?: ""
 	if (compileSyslibConcatenation) {
-		def concatDatasets = concatUtils.concatExpand(compileSyslibConcatenation)
+		def concatDatasets = concatExpand(compileSyslibConcatenation)
 		def String[] syslibDatasets = concatDatasets.split(',');
 		for (String syslibDataset : syslibDatasets )
 		compile.dd(new DDStatement().dsn(syslibDataset).options("shr"))
@@ -166,3 +166,15 @@ def createCobolParms(String buildFile, LogicalFile logicalFile) {
 	return parms
 }
 
+
+def concatExpand(String concatEnv) {
+	
+	println "***** Ray Lam concatExpand -> $concatEnv"
+	
+	def concatExpand = props.getFileProperty('cobol_concat$concatEnv', buildFile) ?: ""
+	println "***** Ray Lam concatExpand -> $concatExpand"
+	
+	
+	return concatDatasets
+
+}
