@@ -172,7 +172,7 @@ def concatExpand(String concatEnv, String buildFile) {
 	println "***** Ray Lam concatExpand -> $concatEnv"
 	
 	
-	def concatEnvDatasets = props.getFileProperty('cobol_concat$concatEnv', buildFile) ?: ""
+	def concatEnvDatasets = props.getFileProperty('cobol_concatENV2', buildFile) ?: ""
 	println "***** Ray Lam concatExpand -> $concatEnvDatasets"
 	
 	
