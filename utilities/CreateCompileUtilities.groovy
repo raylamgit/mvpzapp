@@ -71,7 +71,7 @@ def createCompileCommand(String buildFile, LogicalFile logicalFile, String membe
 		for (String syslibDataset : syslibDatasets )
 		compile.dd(new DDStatement().dsn(syslibDataset).options("shr"))
 		// Ray Lam testing concat
-		println "***** Ray Lam syslibDataset -> $syslibDataset" 
+		println "***** Ray Lam syslibDatasets -> $syslibDatasets" 
 	}
 	
 	// add subsystem libraries
