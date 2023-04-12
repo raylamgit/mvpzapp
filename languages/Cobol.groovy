@@ -260,6 +260,8 @@ def createCompileCommand(String buildFile, LogicalFile logicalFile, String membe
 		def String[] syslibDatasets = compileSyslibConcatenation.split(',');
 		for (String syslibDataset : syslibDatasets )
 		compile.dd(new DDStatement().dsn(syslibDataset).options("shr"))
+		// Ray Lam testing concat
+		println "***** Ray Lam syslibDataset -> $syslibDataset" 
 	}
 	
 	// add subsystem libraries
