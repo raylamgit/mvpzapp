@@ -167,13 +167,13 @@ def createCobolParms(String buildFile, LogicalFile logicalFile) {
 }
 
 
-def concatExpand(String concatEnv) {
+def concatExpand(String concatEnv, String buildFile) {
 	
 	println "***** Ray Lam concatExpand -> $concatEnv"
 	
 	
-	def concaEnvtDatasets = props.getFileProperty('cobol_concatENV1', String buildFile) ?: ""
-	println "***** Ray Lam concatExpand -> $concatExpand"
+	def concatEnvDatasets = props.getFileProperty('cobol_concat$ENV1', buildFile) ?: ""
+	println "***** Ray Lam concatExpand -> $concatEnvDatasets"
 	
 	
 	return concatEnvDatasets
