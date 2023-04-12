@@ -1,27 +1,37 @@
 @groovy.transform.BaseScript com.ibm.dbb.groovy.ScriptLoader baseScript
-import com.ibm.dbb.metadata.*
-import com.ibm.dbb.dependency.*
 import com.ibm.dbb.build.*
-import groovy.transform.*
-import groovy.json.JsonSlurper
-import com.ibm.dbb.scanner.zUnit.*
+import groovy.transform.* 
 
+	
+def concatExpand(String concatEnv) {
+	
+	
+	println "***** Ray Lam concatExpand -> $concatEnv"
+	
+	def String concatDatasets = ''
+	
+	switch (concatEnv) {
+		
+		 case "ENV1":
+		         concatDatasets = "RLAM.RAYGENAP.BMS.COPY,\
+		                           RLAM.RAYGENAP.COPY,\
+		                           RLAM.RAYGENAP.OBJ"
+		         println("concatExpand ENV1"); 
+			 break;
+				  
+		 case "ENV2":
+		         concatDatasets = "RLAM.GENAPP.BMS.COPY,\
+		                           RLAM.GENAPP.COPY,\
+		                           RLAM.GENAPP.OBJ"
+		         println("concatExpand ENV2"); 
+			 break;
+		    default:
+             println("no match");
+		}
+	
+	println("concatDatasets -> $concatDatasets "); 
+	return concatDatasets
 
-// define script properties
-@Field BuildProperties props = BuildProperties.getInstance()
-
-/*
- * getScanner - get the appropriate Scanner for a given file type (Defaults to DependencyScanner)
- */
-def getScanner(String buildFile) {
-	def mapping = new PropertyMappings("dbb.scannerMapping")
-	if (mapping.isMapped("ZUnitConfigScanner", buildFile)) {
-		if (props.verbose) println("*** Scanning file with the ZUnitConfigScanner")
-		scanner = new ZUnitConfigScanner()
-	}
-	else {
-		if (props.verbose) println("*** Scanning file with the default scanner")
-		scanner = new DependencyScanner()
-	}
-	return scanner
 }
+
+
