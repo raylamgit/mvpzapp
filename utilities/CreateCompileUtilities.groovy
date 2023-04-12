@@ -68,7 +68,7 @@ def createCompileCommand(String buildFile, LogicalFile logicalFile, String membe
 	// add custom concatenation
 	def compileSyslibConcatenation = props.getFileProperty('cobol_compileSyslibConcatenation', buildFile) ?: ""
 	if (compileSyslibConcatenation) {
-		def concatDatasets = concatExpand(compileSyslibConcatenation)
+		def concatDatasets = concatExpand(compileSyslibConcatenation, buildFile)
 		def String[] syslibDatasets = concatDatasets.split(',');
 		for (String syslibDataset : syslibDatasets )
 		compile.dd(new DDStatement().dsn(syslibDataset).options("shr"))
@@ -172,7 +172,7 @@ def concatExpand(String concatEnv) {
 	println "***** Ray Lam concatExpand -> $concatEnv"
 	
 	
-	def concaEnvtDatasets = props.getFileProperty('cobol_concatENV1', buildFile) ?: ""
+	def concaEnvtDatasets = props.getFileProperty('cobol_concatENV1', String buildFile) ?: ""
 	println "***** Ray Lam concatExpand -> $concatExpand"
 	
 	
